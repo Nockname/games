@@ -1,0 +1,142 @@
+/* 
+HEAD
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: 'Rude';
+    src: url('/assets/Rude\ Slab\ SemiCondensed\ Bold/Rude\ Slab\ SemiCondensed.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+         url('/assets/Rude\ Slab\ SemiCondensed\ Bold/Rude\ Slab\ SemiCondensed.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}  
+
+html, body {
+    height: 100%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande','Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#container {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+}
+
+#head {
+    width: 100%;
+    /* display: flex; */
+    /* justify-content: space-between; */
+    border-bottom: 1px solid gainsboro;
+}
+
+#game {
+    width: 100%;
+    height: 100%;
+}
+
+.alignleft {
+    float: left;
+    width: 33.33333%;
+    text-align: left;
+  }
+.aligncenter {
+    float: left;
+    width: 33.33333%;
+    text-align: center;
+}
+.alignright {
+    float: left;
+    width: 33.33333%;
+    text-align: right;
+}​
+
+.title{
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0.4rem 0 0.4rem 0;
+    text-align: center;
+    /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande','Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
+
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', serif;
+    /* font-family: "Rude"; */
+    /* font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+}
+
+/* 
+BOARD
+*/
+
+#board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.square {
+    border: 2px solid rgb(212, 214, 218);
+    min-width: 60px;
+    min-height: 60px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* 
+KEYBOARD
+*/
+
+#keyboard-container {
+    height: 200px;
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto 8px;
+    touch-action: manipulation;
+}
+
+.keyboard-row button {
+    font-family: inherit;
+    font-weight: bold;
+    font-size: medium;
+    border: 0;
+    padding: 0;
+    height: 58px;
+    cursor: pointer;
+    background-color: rgb(212, 214, 218);
+    color: black;
+    flex-grow: 1;
+    text-transform: uppercase;
+    margin-right: 6px;
+    border-radius: 4px;
+    user-select: none;
+}
+
+.keyboard-row button.wide-button {
+    flex-grow: 1.5;
+}
+
+.spacer-half {
+    flex-grow: 0.5;
+}
