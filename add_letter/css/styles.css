@@ -1,3 +1,25 @@
+:root {
+    /* Color 1: BW */
+    --header-color: rgb(239, 239, 239);
+    --background-color: rgb(190, 210, 230);
+    --light: rgb(212, 214, 218);
+    --dark: rgb(159, 161, 164);
+
+    /* Color 2: Blue */
+    --header-color: rgb(239, 239, 239);
+    --background-color: rgb(190, 210, 230);
+    --light: rgb(238, 243, 248);
+    --dark: rgb(116, 126, 140);
+    --correct: rgb(111, 176, 120);
+
+    /* purple */
+    /* --background-color: rgb(196, 190, 230); */
+
+    /* red */
+    /* --background-color: rgb(245, 142, 138); */
+    
+}
+
 /* 
 HEAD
 */
@@ -16,6 +38,23 @@ HEAD
 html, body {
     height: 100%;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande','Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-color: var(--background-color);
+    /* overflow-y: hidden; */
+}
+
+h2 {
+    font-weight: light;
+    margin-left: 20px;
+    margin-right: 20px;
+    font-size: large;
+}
+
+/* these are the letters */
+h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 #container {
@@ -23,19 +62,17 @@ html, body {
     height: 100%;
     align-items: center;
     flex-direction: column;
-    background-color: white;
+    background-color: var(--background-color);
 }
 
 #head {
     width: 100%;
-    /* display: flex; */
-    /* justify-content: space-between; */
+    display: flex;
+    justify-content: space-between;
     border-bottom: 1px solid gainsboro;
-}
 
-#game {
-    width: 100%;
-    height: 100%;
+    align-items: center;
+    background-color: var(--header-color);
 }
 
 .alignleft {
@@ -43,28 +80,87 @@ html, body {
     width: 33.33333%;
     text-align: left;
   }
-.aligncenter {
+  .aligncenter {
     float: left;
     width: 33.33333%;
     text-align: center;
+  }
+  .alignright {
+   float: left;
+   width: 33.33333%;
+   text-align: right;
+  }​
+
+
+.outer {
+display: table;
+position: absolute;
+top: 0;
+left: 0;
+height: 100%;
+width: 100%;
 }
-.alignright {
-    float: left;
-    width: 33.33333%;
-    text-align: right;
-}​
+
+.middle {
+display: table-cell;
+vertical-align: middle;
+}
+
+.inner {
+margin-left: auto;
+margin-right: auto;
+}
+
+#game {
+    width: 100%;
+}
 
 .title{
-    color: white;
+    color: black;
     font-size: 2.5rem;
     font-weight: bold;
     margin: 0.4rem 0 0.4rem 0;
-    text-align: center;
+    /* text-align: center; */
     /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande','Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
 
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', serif;
+    /* font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', serif; */
     /* font-family: "Rude"; */
-    /* font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, serif;
+}
+
+/* 
+WORD
+*/
+
+#word-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+    margin-top: 100px;
+}
+
+#word {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    width: 400px;
+    border-bottom: 2px solid var(--dark);
+}
+
+.letter {
+    min-width: 82px;
+    min-height: 20px;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 00%;
+
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 
@@ -88,11 +184,19 @@ BOARD
 }
 
 .square {
-    border: 2px solid rgb(212, 214, 218);
+    border: 2px solid var(--light);
     min-width: 60px;
     min-height: 60px;
     font-size: 2rem;
     font-weight: bold;
+    text-transform: uppercase;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    animation-duration: 1s;
+    transition: all 1;
 }
 
 /* 
@@ -124,7 +228,7 @@ KEYBOARD
     padding: 0;
     height: 58px;
     cursor: pointer;
-    background-color: rgb(212, 214, 218);
+    background-color: var(--light);
     color: black;
     flex-grow: 1;
     text-transform: uppercase;
