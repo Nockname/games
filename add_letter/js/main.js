@@ -24,7 +24,8 @@ document.addEventListener("DOMContentLoaded", () =>{
     });
     readTextFile("bank/MEDIUM__2_0-50000_Wiki100k.json", function(text2){
         medium = JSON.parse(text2);
-        readTextFile("bank/HARD__2_words_alpha.json", function(text3){
+        // readTextFile("bank/HARD__2_words_alpha.json", function(text3){
+        readTextFile("bank/HARDALT_2_SUBTRACT2_usa.json", function(text3){
             hard = JSON.parse(text3);
         });
     });
