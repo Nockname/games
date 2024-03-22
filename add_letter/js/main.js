@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () =>{
     function todayWord() {
 
         // var d1 = new Date("02/11/2024");   
-        var d1 = new Date("03/22/2024");   
+        var d1 = new Date("03/23/2024");   
         var d2 = new Date();   
         var diff = d2.getTime() - d1.getTime();
         var daydiff = Number((diff / 86400000).toFixed(0)) + shift;
