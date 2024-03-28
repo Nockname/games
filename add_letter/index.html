@@ -6,12 +6,12 @@
     <title>Add Letter</title>
 
     <script src="js/main.js"></script>
-    <script type="text/javascript" src="/bank/EASY__2_usa.json"></script>
-    <script type="text/javascript" src="/bank/MEDIUM__2_0-50000_Wiki100k.json"></script>
-    <script type="text/javascript" src="/bank/HARD__2_words_alpha.json"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
 
     <link rel="stylesheet" href="css/styles.css"/>
     <link href="https://db.onlinewebfonts.com/c/d815c9e05bd198c059c741759487b63c?family=Rude+Slab+SemiCondensed+Bold" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@simondmc/popup-js@1.4.3/popup.min.js"></script>
     <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
@@ -51,6 +51,9 @@
             
     
                 <div id="keyboard-container">
+
+                    
+
                     <div class="keyboard-row">
                         <button data-key="q">q</button>
                         <button data-key="w">w</button>
@@ -87,7 +90,18 @@
                         <button data-key="m">m</button>
                         <button data-key="del" class="wide-button">Del</button>
                     </div>
+
+                    <div class="hint">
+                        <button id="hint" class="big-button">Hint: 3 remaining</button>
+                    </div>
+
                 </div>
+
+                <div id="hint-board">
+                    
+                </div>
+
+                
               </div>
             </div>
         </div>

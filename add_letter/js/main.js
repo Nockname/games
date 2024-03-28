@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () =>{
     setDate();
     // setWord()
     document.getElementById("word-container").classList.add("animate__animated");
+    document.getElementById("hint-board").classList.add("animate__animated");
+    document.getElementById("hint").classList.add("animate__animated");
     // createWord("GRUND");
 
     const shift = 1;
@@ -13,6 +15,29 @@ document.addEventListener("DOMContentLoaded", () =>{
     let level = 1;
     let onPause = false;
     let currentRGB = [190, 210, 230];
+
+    // hints
+    let hints = [];
+    let hintsUsed = 0;
+    let hintsTotal = 3;
+    if (localStorage.getItem(dayDiff()) !== null) {
+        hintsUsed = Number(localStorage.getItem(dayDiff()))
+    }
+    else {
+        localStorage.setItem(dayDiff(), hintsUsed);
+    }
+    document.getElementById("hint").innerHTML = "Hint: " + (hintsTotal - hintsUsed) + " remaining";
+
+
+    // const myPopup = new Popup({
+    //     id: "my-popup",
+    //     title: "Congratulations!",
+    //     content: `
+    //         You used ` + hintsUsed + ` total hints.`,
+    //     // hideCloseButton: true,
+    //     // hideTitle: true
+    //     showImmediately: true,
+    // });
     const letters = "qwertyuiopasdfghjklzxcvbnm";
 
     let easy = [];
@@ -34,9 +59,14 @@ document.addEventListener("DOMContentLoaded", () =>{
 
     for (let i = 0; i < keys.length; i++){
         keys[i].onclick = ({ target }) => {
-            const letter = target.getAttribute('data-key');
+            keys[i].blur();
 
-            updateGuessedWords(letter);
+            if (!onPause){
+                const letter = target.getAttribute('data-key');
+
+                updateGuessedWords(letter);
+            }
+            
         }
     }
 
@@ -74,14 +104,16 @@ document.addEventListener("DOMContentLoaded", () =>{
         rawFile.send(null);
     }
 
-    function todayWord() {
-
-        // var d1 = new Date("02/11/2024");   
+    function dayDiff () {
         var d1 = new Date("03/23/2024");   
         var d2 = new Date();   
         var diff = d2.getTime() - d1.getTime();
-        var daydiff = Number(Math.floor(diff / 86400000)) + shift;
+        return Number(Math.floor(diff / 86400000)) + shift;
+    }
 
+    function todayWord() {
+
+        var daydiff = dayDiff();
 
         // THREE DATA SETS
 
@@ -210,6 +242,18 @@ document.addEventListener("DOMContentLoaded", () =>{
         return a;
     }
 
+    function averageHints(){
+        var totalHints = 0;
+        var totalDays = 0;
+        for (var daydiff = 0; daydiff <= dayDiff(); daydiff += 1){
+            if (localStorage.getItem(daydiff) !== null) {
+                totalHints += Number(localStorage.getItem(dayDiff()))
+                totalDays += 1;
+            }
+        }
+        return (totalHints / totalDays).toFixed(2);
+    }
+
     function nextLevel(){
         guessedWords = [[]];
         availableSpace = 1;
@@ -218,15 +262,28 @@ document.addEventListener("DOMContentLoaded", () =>{
         onPause = true;
 
         if (level > 3){
+
+            const myPopup = new Popup({
+                id: "my-popup",
+                title: "Great job!",
+                content: `
+                    You used ` + hintsUsed + ` total hints.
+                    On average, you use ` + averageHints() + ` total hints per day.`,
+                // hideCloseButton: true,
+                // hideTitle: true
+            });
+
             setTimeout(() => {
-                document.getElementById("board-container").classList.add("animate__animated");
-                document.getElementById("keyboard-container").classList.add("animate__animated");
+                // document.getElementById("board-container").classList.add("animate__animated");
+                // document.getElementById("keyboard-container").classList.add("animate__animated");
 
-                document.getElementById("word-container").classList.add("animate__fadeOut")
-                document.getElementById("board-container").classList.add("animate__fadeOut")
-                document.getElementById("keyboard-container").classList.add("animate__fadeOut")
+                // document.getElementById("word-container").classList.add("animate__fadeOut")
+                // document.getElementById("board-container").classList.add("animate__fadeOut")
+                // document.getElementById("keyboard-container").classList.add("animate__fadeOut")
 
-                onPause = false;
+                onPause = true;
+                myPopup.show();
+                
                 
             }, 2800);
         }
@@ -408,4 +465,113 @@ document.addEventListener("DOMContentLoaded", () =>{
 
         document.getElementById("date").innerHTML = today;
     }
+
+
+
+    // HINTS
+
+    // function getHint(word) {
+
+    //     fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word)
+    //     .then(response => {
+    //         return response.json();
+    //     })
+    //     .then(word => {
+    //         console.log(word[0]);
+    //     })
+    
+    // }
+
+    function useHint(hint) {
+        hint = hint.trim()
+        if (hint.slice(-1) != "."){
+            hint += "."
+        }
+        document.getElementById("hint-board").innerHTML = hint;
+    }
+
+    function getHintWord() {
+        if (hintsUsed >= hintsTotal){
+            return;
+        }
+        var wordArr = getCurrentWordArr();
+        let todayWords = todayWord();
+
+        for (var i = 0; i < 2; i++){
+            word = todayWords[i];
+            if (hints.includes(word)){
+                continue;
+            }
+            if (guessedWordCount == 0){
+                return word;
+            }
+            if (! idIsWord(Math.floor(availableSpace / 6) * 6 + 1, word)){
+                return word;
+            }
+        }
+    }
+
+    document.getElementById("hint").onclick = function(){
+        document.getElementById("hint").blur();
+        if (onPause){
+            return;
+        }
+        let todayWords = todayWord();
+        let word = getHintWord();
+        if (word == null){
+
+            // document.getElementById("hint-board").classList.add("animate__headShake");
+            document.getElementById("hint").classList.add("animate__headShake");
+            setTimeout(() => {
+                document.getElementById("hint").classList.remove("animate__headShake");
+                // document.getElementById("hint-board").classList.remove("animate__headShake");
+            }, 500)
+
+            return;
+        }
+        document.getElementById("hint-board").style.setProperty("padding-top", "20px");
+        document.getElementById("hint-board").style.setProperty("padding-bottom", "20px");
+        hints.push(word);
+        hintsUsed += 1;
+        localStorage.setItem(dayDiff(), hintsUsed);
+        document.getElementById("hint").innerHTML = "Hint: " + (hintsTotal - hintsUsed) + " remaining";
+        let hint;
+
+        fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word)
+        .then(response => {
+            return response.json();
+        })
+        .then(word => {
+            // if ((word[0].meanings[0].synonyms).length > 0){
+            //     hint = word[0].meanings[0].synonyms[0];
+            // }
+            // else {
+            //     hint = word[0].meanings[0].definitions[0].definition;
+            // }
+            hint = word[0].meanings[0].definitions[0].definition;
+            useHint(hint);
+        })
+        .catch(error => {
+            let todayWords = todayWord();
+            for (var i = 0; i < 2; i++){
+                if (word == todayWords[i]){
+                    var spot = Number(todayWords[i+3]) + 1
+                    if (spot == 1){
+                        spot += "st"
+                    }
+                    if (spot == 2){
+                        spot += "nd"
+                    }
+                    if (spot == 3){
+                        spot += "rd"
+                    }
+                    if (spot > 3){
+                        spot += "th"
+                    }
+                    useHint("Consider placing an additional letter in the " + spot + " spot.")
+                }
+            }
+        })
+    };
+      
 })

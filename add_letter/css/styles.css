@@ -9,6 +9,8 @@
     --header-color: rgb(239, 239, 239);
     --background-color: rgb(190, 210, 230);
     --light: rgb(238, 243, 248);
+    --medium: rgba(238, 243, 248, 0.549);
+    --medium-minus: rgba(238, 243, 248, 0.249);
     --dark: rgb(116, 126, 140);
     --correct: rgb(111, 176, 120);
 
@@ -86,10 +88,10 @@ h3 {
     text-align: center;
   }
   .alignright {
-   float: left;
-   width: 33.33333%;
-   text-align: right;
-  }​
+    float: left;
+    width: 33.33333%;
+    text-align: right;
+   }​
 
 
 .outer {
@@ -232,7 +234,8 @@ KEYBOARD
     color: black;
     flex-grow: 1;
     text-transform: uppercase;
-    margin-right: 6px;
+    margin-left: 3px;
+    margin-right: 3px;
     border-radius: 4px;
     user-select: none;
 }
@@ -243,4 +246,61 @@ KEYBOARD
 
 .spacer-half {
     flex-grow: 0.5;
+}
+
+/* HINT */
+
+.hint {
+    display: flex;
+    /* padding-bottom: 8pt; */
+}
+
+.hint button {
+    font-family: inherit;
+    font-weight: bold;
+    font-size: medium;
+    border: 0;
+    padding: 0;
+    height: 58px;
+    cursor: pointer;
+    background-color: var(--medium);
+    color: black;
+    flex-grow: 1;
+    text-transform: uppercase;
+    margin-right: 3px;
+    margin-left: 3px;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    user-select: none;
+    transition: 0.2s;
+}
+
+.hint button:hover {
+    filter: brightness(60%);
+}
+
+#hint-board {
+    font-family: inherit;
+    /* font-weight: bold; */
+    font-size: medium;
+    background-color: var(--medium-minus);
+    display: flex;
+    width: 382px;
+    padding-left: 20px;
+    padding-right: 20px;
+    /* min-height: 30px; */
+    /* padding: 20px; */
+    text-wrap: wrap;
+
+    transition: 0.5s;
+    margin-right: 3px;
+    margin-left: 3px;
+    /* margin-top: -4px; */
+    /* margin-top: 8px; */
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    display: flex;
+    /* justify-content: center; */
+    overflow-wrap: break-word;
+
 }
