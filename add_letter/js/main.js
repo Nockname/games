@@ -55,6 +55,11 @@ document.addEventListener("DOMContentLoaded", () =>{
         });
     });
 
+    let totalWords = [];
+    readTextFile("bank/words_alpha_six_letters.json", function(alpha){
+        totalWords = JSON.parse(alpha);
+    });
+
     const keys = document.querySelectorAll('.keyboard-row button');
 
     for (let i = 0; i < keys.length; i++){
@@ -105,10 +110,10 @@ document.addEventListener("DOMContentLoaded", () =>{
     }
 
     function dayDiff () {
-        var d1 = new Date("03/23/2024");   
+        var d1 = new Date("05/12/2024");   
         var d2 = new Date();   
         var diff = d2.getTime() - d1.getTime();
-        return Number(Math.floor(diff / 86400000)) + shift;
+        return Math.max(Number(Math.floor(diff / 86400000)) + shift, 1);
     }
 
     function todayWord() {
@@ -166,6 +171,26 @@ document.addEventListener("DOMContentLoaded", () =>{
         document.getElementById("word").innerHTML = ans[2];
     }
 
+    // checks if the last typed word is a word according to dictionary
+    // NOT USED
+    function idIsInDict(lastId){
+
+        let word = ""
+        for (i = 0; i < 6; i++){
+            word += document.getElementById(String(lastId-6+i)).innerText
+        }
+        let yes;
+
+        fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word)
+        .then((response)=>yes = true)
+        .catch(error => {
+            yes = false;
+        })
+        if (yes){
+            return true;
+        }
+    }
+
     // checks if the last typed word equals a string
     function idIsWord(lastId, word){
         for (i = 0; i < 6; i++){
@@ -174,6 +199,56 @@ document.addEventListener("DOMContentLoaded", () =>{
             }
         }
         return true;
+    }
+
+    // checks if the last typed word equals any word in totalWords
+    function idIsAnyWord(lastId, base){
+
+        let word = ""
+        for (let i = 0; i < 6; i++){
+            word += document.getElementById(String(lastId-6+i)).innerText
+        }
+
+        base = base.toLowerCase();        
+
+        word = word.toLowerCase();
+
+        // tell if word is off from base by one letter
+        let i = 0, j = 0, diffCount = 0;
+        while (i < base.length && j < word.length) {
+            if (base[i] !== word[j]) {
+                diffCount++;
+                j++; // move only in the word string
+            } else {
+                i++;
+                j++;
+            }
+
+            if (diffCount > word.length - base.length) {
+                return false;
+            }
+        }
+
+        let start = 0;
+        let end = totalWords.length - 1;
+
+        while (start <= end) {
+            let mid = Math.floor((start + end) / 2);
+
+            if (totalWords[mid] === word) {
+                // word found
+                return true;
+            }
+            if (totalWords[mid].localeCompare(word) < 0) {
+                // continue search to the right
+                start = mid + 1;
+            } else {
+                // continue search to the left
+                end = mid - 1;
+            }
+        }
+
+        return false;
     }
 
     // checks if the last typed word equals previous typed word
@@ -207,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () =>{
             ans = todayWord();
             if (currentWordArr.length == 6){
 
-                if (idIsWord(availableSpace, ans[0]) || idIsWord(availableSpace, ans[1])){
+                if (idIsWord(availableSpace, ans[0]) || idIsWord(availableSpace, ans[1]) || idIsAnyWord(availableSpace, ans[2])){
 
                     if (guessedWordCount ==0 || ! idIsId(availableSpace)){
                         handleCorrectWord();
