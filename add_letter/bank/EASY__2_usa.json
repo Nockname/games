@@ -39,19 +39,6 @@
         ]
     ],
     [
-        "arcan",
-        [
-            [
-                "arcane",
-                5
-            ],
-            [
-                "arctan",
-                3
-            ]
-        ]
-    ],
-    [
         "talet",
         [
             [
@@ -164,58 +151,6 @@
             ],
             [
                 "elicit",
-                4
-            ]
-        ]
-    ],
-    [
-        "brech",
-        [
-            [
-                "breach",
-                3
-            ],
-            [
-                "breech",
-                2
-            ]
-        ]
-    ],
-    [
-        "injet",
-        [
-            [
-                "inject",
-                4
-            ],
-            [
-                "inkjet",
-                2
-            ]
-        ]
-    ],
-    [
-        "eward",
-        [
-            [
-                "edward",
-                1
-            ],
-            [
-                "reward",
-                0
-            ]
-        ]
-    ],
-    [
-        "siney",
-        [
-            [
-                "sidney",
-                2
-            ],
-            [
-                "sinewy",
                 4
             ]
         ]
