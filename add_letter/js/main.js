@@ -213,6 +213,8 @@ document.addEventListener("DOMContentLoaded", () =>{
 
         word = word.toLowerCase();
 
+        console.log(word, base)
+
         // tell if word is off from base by one letter
         let i = 0, j = 0, diffCount = 0;
         while (i < base.length && j < word.length) {
@@ -229,10 +231,15 @@ document.addEventListener("DOMContentLoaded", () =>{
             }
         }
 
+        console.log("passed first check")
+
         let start = 0;
         let end = totalWords.length - 1;
 
         while (start <= end) {
+
+            console.log(start, totalWords[start], end, totalWords[end])
+
             let mid = Math.floor((start + end) / 2);
 
             if (totalWords[mid] === word) {
@@ -247,6 +254,8 @@ document.addEventListener("DOMContentLoaded", () =>{
                 end = mid - 1;
             }
         }
+
+        console.log("failed second check")
 
         return false;
     }
