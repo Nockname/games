@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", () =>{
     let currentRGB = [190, 210, 230];
 
     // hints
-    let hints = [];
+    let dictHints = [];
+    let spellHints = [];
     let hintsUsed = 0;
     let hintsTotal = 3;
     if (localStorage.getItem(dayDiff()) !== null) {
@@ -138,7 +139,9 @@ document.addEventListener("DOMContentLoaded", () =>{
                 medium[daydiff - 1][1][1][0].toUpperCase(),
                 medium[daydiff - 1][0].toUpperCase(),
                 medium[daydiff - 1][1][0][1],
-                medium[daydiff - 1][1][1][1]
+                medium[daydiff - 1][1][0][2],
+                medium[daydiff - 1][1][1][1],
+                medium[daydiff - 1][1][1][2]
             ]  
         }
 
@@ -148,7 +151,11 @@ document.addEventListener("DOMContentLoaded", () =>{
                 hard[daydiff - 1][1][1][0].toUpperCase(),
                 hard[daydiff - 1][0].toUpperCase(),
                 hard[daydiff - 1][1][0][1],
-                hard[daydiff - 1][1][1][1]
+                hard[daydiff - 1][1][0][2],
+                hard[daydiff - 1][1][0][3],
+                hard[daydiff - 1][1][1][1],
+                hard[daydiff - 1][1][1][2],
+                hard[daydiff - 1][1][1][3]
             ]  
         }
 
@@ -583,7 +590,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 
         for (var i = 0; i < 2; i++){
             word = todayWords[i];
-            if (hints.includes(word)){
+            if (spellHints.includes(word)){
                 continue;
             }
             if (guessedWordCount == 0){
@@ -593,6 +600,78 @@ document.addEventListener("DOMContentLoaded", () =>{
                 return word;
             }
         }
+    }
+
+    function intToString(spot) {
+        if (spot == 1){
+            return spot + "st"
+        }
+        if (spot == 2){
+            return spot + "nd"
+        }
+        if (spot == 3){
+            return spot + "rd"
+        }
+        if (spot > 3){
+            return spot + "th"
+        }
+    }
+
+
+    function giveSpellHint(word) {  
+        spellHints.push(word);
+
+        let todayWords = todayWord();
+        
+        for (var i = 0; i < 2; i++){
+            if (word == todayWords[i]){
+
+                let numbers = [];
+
+                for (var j = 0; j < (todayWords.length - 3) / 2; j++){
+                    k = j + i * (todayWords.length - 3) / 2 + 3;
+                    numbers.push(Number(todayWords[k]) + 1);
+                }
+
+                numbers.sort(function(a, b){return a - b});
+
+                if (numbers.length == 1){
+                    useHint("Consider placing an additional letter in the " + intToString(numbers[0]) + " spot.")
+                }
+                else if (numbers.length == 2){
+                    useHint("Consider placing an additional letter in the " + intToString(numbers[0]) + " and " + intToString(numbers[1]) + " spots.")
+                }
+                else {
+                    useHint("Consider placing an additional letter in the " + intToString(numbers[0]) + ", " + intToString(numbers[1]) + ", and " + intToString(numbers[2]) + " spots.")
+                }
+            }
+        }
+    }
+
+    function giveDictHint(word) {
+
+        dictHints.push(word);
+        
+        let hint;
+
+        fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word)
+        .then(response => {
+            return response.json();
+        })
+        .then(word => {
+            // if ((word[0].meanings[0].synonyms).length > 0){
+            //     hint = word[0].meanings[0].synonyms[0];
+            // }
+            // else {
+            //     hint = word[0].meanings[0].definitions[0].definition;
+            // }
+            hint = word[0].meanings[0].definitions[0].definition;
+            useHint(hint);
+        })
+        .catch(error => {
+            giveSpellHint(word)
+        })
+
     }
 
     document.getElementById("hint").onclick = function(){
@@ -615,47 +694,18 @@ document.addEventListener("DOMContentLoaded", () =>{
         }
         document.getElementById("hint-board").style.setProperty("padding-top", "20px");
         document.getElementById("hint-board").style.setProperty("padding-bottom", "20px");
-        hints.push(word);
+
         hintsUsed += 1;
         localStorage.setItem(dayDiff(), hintsUsed);
         document.getElementById("hint").innerHTML = "Hint: " + (hintsTotal - hintsUsed) + " remaining";
-        let hint;
 
-        fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word)
-        .then(response => {
-            return response.json();
-        })
-        .then(word => {
-            // if ((word[0].meanings[0].synonyms).length > 0){
-            //     hint = word[0].meanings[0].synonyms[0];
-            // }
-            // else {
-            //     hint = word[0].meanings[0].definitions[0].definition;
-            // }
-            hint = word[0].meanings[0].definitions[0].definition;
-            useHint(hint);
-        })
-        .catch(error => {
-            let todayWords = todayWord();
-            for (var i = 0; i < 2; i++){
-                if (word == todayWords[i]){
-                    var spot = Number(todayWords[i+3]) + 1
-                    if (spot == 1){
-                        spot += "st"
-                    }
-                    if (spot == 2){
-                        spot += "nd"
-                    }
-                    if (spot == 3){
-                        spot += "rd"
-                    }
-                    if (spot > 3){
-                        spot += "th"
-                    }
-                    useHint("Consider placing an additional letter in the " + spot + " spot.")
-                }
-            }
-        })
+        if (dictHints.includes(word)){
+            giveSpellHint(word);
+        }
+        else{
+            giveDictHint(word);
+        }
+        
     };
       
 })
