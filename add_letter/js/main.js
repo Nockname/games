@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () =>{
     }
 
     function dayDiff () {
-        var d1 = new Date("05/12/2024");   
+        var d1 = new Date("05/12/2025");   
         var d2 = new Date();   
         var diff = d2.getTime() - d1.getTime();
         return Math.max(Number(Math.floor(diff / 86400000)) + shift, 1);
