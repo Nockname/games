@@ -1,6 +1,6 @@
-# Add Letter
+# Letter Fill
 
-Play **ADD LETTER**, a New-York-Times-inspired website for daily games at [games.nicholashagedorn.com](https://games.nicholashagedorn.com).
+Play **LETTER FILL**, a New-York-Times-inspired website for daily games at [games.nicholashagedorn.com](https://games.nicholashagedorn.com).
 
 ## Rules
 
